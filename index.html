@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>키세카츠 매장 안내</title>
+  <meta name="description" content="가까운 키세카츠 매장을 골라 위치·메뉴를 확인하세요">
+  <meta property="og:title" content="키세카츠 매장 안내">
+  <meta property="og:description" content="가까운 매장을 골라 위치·메뉴를 확인하세요">
+  <meta name="theme-color" content="#be1e2d">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta name="robots" content="noindex">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', { send_page_view: false });
+  </script>
+  <style>
+    :root {
+      --bg: #f8f4ec; --card: #ffffff; --text: #1d1a17; --muted: #6b645c;
+      --brand: #be1e2d; --naver: #03c75a; --line: #e6dfd3; --shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #171412; --card: #24201c; --text: #f3ede3; --muted: #a79f94; --line: #3a332c; --shadow: 0 2px 10px rgba(0,0,0,.4); }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--text); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+      min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+      padding: 48px 16px 32px;
+    }
+    main { width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .logo { width: 72px; height: 72px; border-radius: 50%; box-shadow: var(--shadow); }
+    h1 { margin: 8px 0 0; font-size: 22px; letter-spacing: .04em; }
+    .lead { margin: 0 0 16px; color: var(--muted); font-size: 15px; text-align: center; }
+    .store {
+      display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px;
+      padding: 0 18px; border: 1px solid var(--line); border-radius: 14px;
+      background: var(--card); color: var(--text); text-decoration: none;
+      font-size: 17px; font-weight: 600; box-shadow: var(--shadow);
+      transition: transform .08s ease;
+    }
+    .store:active { transform: scale(.985); }
+    .store:focus-visible { outline: 3px solid var(--naver); outline-offset: 2px; }
+    .store svg { flex: none; width: 28px; height: 28px; }
+    .store span { flex: 1; }
+    .store small { color: var(--muted); font-weight: 400; font-size: 13px; }
+    footer { margin-top: auto; padding-top: 32px; font-size: 13px; }
+    footer a { color: var(--muted); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="logo" src="assets/favicon.svg" alt="키세카츠 로고" width="72" height="72">
+    <h1>키세카츠</h1>
+    <p class="lead">가까운 매장을 골라 위치·메뉴를 확인하세요</p>
+
+    <a class="store" data-store="sinnonhyeon" href="https://naver.me/5UVwGmuo">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="#03c75a"/><path d="M8.5 8h3.6l3.9 5.9V8H19.5v12h-3.6L12 14.1V20H8.5z" fill="#fff"/></svg>
+      <span>키세카츠 신논현점</span>
+      <small>네이버 플레이스</small>
+    </a>
+    <a class="store" data-store="anguk" href="https://naver.me/G1m1aYFf">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="#03c75a"/><path d="M8.5 8h3.6l3.9 5.9V8H19.5v12h-3.6L12 14.1V20H8.5z" fill="#fff"/></svg>
+      <span>키세카츠 안국역점</span>
+      <small>네이버 플레이스</small>
+    </a>
+    <a class="store" data-store="sinsa" href="https://naver.me/FfeO1eh0">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="#03c75a"/><path d="M8.5 8h3.6l3.9 5.9V8H19.5v12h-3.6L12 14.1V20H8.5z" fill="#fff"/></svg>
+      <span>키세카츠 신사역점</span>
+      <small>네이버 플레이스</small>
+    </a>
+  </main>
+  <footer><a href="https://kisekatsu.kr/">kisekatsu.kr</a></footer>
+
+  <script type="module">
+    import { parseTags, trackClick } from './lib/params.js';
+    const tags = parseTags(location.search);
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'page_view', { ch: tags.ch, c: tags.c });
+    }
+    for (const a of document.querySelectorAll('a[data-store]')) {
+      a.addEventListener('click', () => trackClick(a.dataset.store, tags));
+    }
+  </script>
+</body>
+</html>
