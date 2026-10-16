@@ -1,0 +1,29 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { toRows, buildData } from '../scripts/fetch-ga4.mjs';
+
+const viewsReport = {
+  dimensionHeaders: [{ name: 'date' }, { name: 'customEvent:ch' }, { name: 'customEvent:c' }],
+  metricHeaders: [{ name: 'eventCount' }],
+  rows: [{ dimensionValues: [{ value: '20261016' }, { value: 'ig' }, { value: '(not set)' }], metricValues: [{ value: '5' }] }],
+};
+const clicksReport = {
+  dimensionHeaders: [{ name: 'date' }, { name: 'customEvent:ch' }, { name: 'customEvent:c' }, { name: 'customEvent:store' }],
+  metricHeaders: [{ name: 'eventCount' }],
+  rows: [{ dimensionValues: [{ value: '20261016' }, { value: 'yt' }, { value: '251016-x' }, { value: 'anguk' }], metricValues: [{ value: '2' }] }],
+};
+
+test('views 행 변환, (not set) 보존', () => {
+  assert.deepEqual(toRows(viewsReport, 'views'), [{ date: '2026-10-16', ch: 'ig', c: '(not set)', n: 5 }]);
+});
+test('clicks 행 변환에 store 포함', () => {
+  assert.deepEqual(toRows(clicksReport, 'clicks'), [{ date: '2026-10-16', ch: 'yt', c: '251016-x', store: 'anguk', n: 2 }]);
+});
+test('rows 없으면 빈 배열', () => {
+  assert.deepEqual(toRows({ dimensionHeaders: [], metricHeaders: [] }, 'views'), []);
+});
+test('buildData는 ISO updated', () => {
+  const d = buildData(viewsReport, clicksReport, new Date('2026-10-17T00:10:00Z'));
+  assert.equal(d.updated, '2026-10-17T00:10:00.000Z');
+  assert.equal(d.views.length, 1); assert.equal(d.clicks.length, 1);
+});
