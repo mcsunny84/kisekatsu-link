@@ -59,36 +59,50 @@ async function accessToken(sa) {
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion: `${header}.${claims}.${sig}` }),
   });
-  if (!res.ok) throw new Error(`token ${res.status}: ${await res.text()}`);
+  if (!res.ok) throw new Error(`token ${res.status}`);
   return (await res.json()).access_token;
 }
 
-async function runReport(token, propertyId, eventName, extraDims) {
-  const body = {
-    dateRanges: [{ startDate: START_DATE, endDate: 'today' }],
-    dimensions: [{ name: 'date' }, { name: 'customEvent:ch' }, { name: 'customEvent:c' }, ...extraDims.map(name => ({ name }))],
-    metrics: [{ name: 'eventCount' }],
-    dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { matchType: 'EXACT', value: eventName } } },
-    limit: 100000,
-  };
-  const res = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
-    method: 'POST',
-    headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error(`runReport ${eventName} ${res.status}: ${await res.text()}`);
-  return res.json();
+/** runReport를 offset으로 끝까지 받아 rows를 합친다. fetchImpl·pageSize는 테스트용. */
+export async function runReportAll(token, propertyId, eventName, extraDims, { fetchImpl = fetch, pageSize = 100000 } = {}) {
+  const rows = [];
+  let offset = 0, headers = null, rowCount = 0;
+  for (let page = 0; page < 50; page++) {
+    const body = {
+      dateRanges: [{ startDate: START_DATE, endDate: 'today' }],
+      dimensions: [{ name: 'date' }, { name: 'customEvent:ch' }, { name: 'customEvent:c' }, ...extraDims.map(name => ({ name }))],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { matchType: 'EXACT', value: eventName } } },
+      limit: pageSize,
+      offset,
+    };
+    const res = await fetchImpl(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`runReport ${eventName} ${res.status}`);
+    const json = await res.json();
+    headers = headers || { dimensionHeaders: json.dimensionHeaders || [], metricHeaders: json.metricHeaders || [] };
+    rows.push(...(json.rows || []));
+    rowCount = Number(json.rowCount) || 0;
+    offset += pageSize;
+    if (rows.length >= rowCount || !(json.rows || []).length) break;
+  }
+  return { ...headers, rowCount, rows };
 }
 
 async function main() {
   const propertyId = process.env.GA4_PROPERTY_ID;
   const saJson = process.env.GA4_SA_JSON;
   if (!propertyId || !saJson) throw new Error('GA4_PROPERTY_ID, GA4_SA_JSON 환경변수가 필요합니다');
-  const sa = JSON.parse(saJson);
+  let sa;
+  try { sa = JSON.parse(saJson); } catch { throw new Error('GA4_SA_JSON이 올바른 JSON이 아닙니다'); }
+  if (!sa.client_email || !sa.private_key) throw new Error('GA4_SA_JSON에 client_email/private_key가 없습니다');
   const token = await accessToken(sa);
   const [views, clicks] = await Promise.all([
-    runReport(token, propertyId, 'page_view', []),
-    runReport(token, propertyId, 'store_click', ['customEvent:store']),
+    runReportAll(token, propertyId, 'page_view', []),
+    runReportAll(token, propertyId, 'store_click', ['customEvent:store']),
   ]);
   const data = buildData(views, clicks, new Date());
   const out = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../dash/data.json');

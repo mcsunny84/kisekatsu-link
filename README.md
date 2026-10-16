@@ -9,3 +9,6 @@
 
 ## 현황판 수동 갱신
 GitHub Actions가 매일 00:10(KST)에 돌린다. 바로 갱신하려면 `gh workflow run update-dash.yml`. 로컬 실행은 환경변수 `GA4_PROPERTY_ID`, `GA4_SA_JSON`를 넣고 `node scripts/fetch-ga4.mjs`.
+
+## DNS
+가비아 DNS(kisekatsu.kr)에 `link` CNAME → `mcsunny84.github.io.` (2026-10-16 추가). HTTPS는 GitHub Pages가 발급.

@@ -32,3 +32,31 @@ test('(not set) 행은 direct로 합산', () => {
   const s = summarize(sample, null, '2026-10-16');
   assert.equal(s.cross.direct.anguk, 1);
 });
+
+test('__proto__ 채널이 다른 집계를 오염시키지 않음', () => {
+  const data = { updated: null, views: [], clicks: [
+    { date: '2026-10-16', ch: '__proto__', c: '', store: 'anguk', n: 10 },
+    { date: '2026-10-16', ch: 'ig', c: '', store: 'anguk', n: 1 },
+  ] };
+  const s = summarize(data, null, '2026-10-16');
+  assert.equal(s.cross.ig.anguk, 1);
+  assert.equal(({}).anguk, undefined);
+});
+test('지점 미상 클릭은 unknown으로 합산', () => {
+  const data = { updated: null, views: [], clicks: [
+    { date: '2026-10-16', ch: 'ig', c: '', store: '(not set)', n: 5 },
+  ] };
+  const s = summarize(data, null, '2026-10-16');
+  assert.equal(s.cross.ig.unknown, 5);
+  assert.equal(s.channels[0].clicks, 5);
+});
+test('일별 추이는 빈 날짜를 0으로 채움', () => {
+  const s = summarize(sample, null, '2026-10-16');
+  assert.equal(s.daily.length, 12);
+  assert.deepEqual(s.daily[1], { date: '2026-10-06', views: 0, clicks: 0 });
+});
+test('기간 지정 시 일별은 기간 전체를 채움', () => {
+  const s = summarize(sample, 7, '2026-10-16');
+  assert.equal(s.daily.length, 7);
+  assert.equal(s.daily[0].date, '2026-10-10');
+});

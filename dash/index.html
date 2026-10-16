@@ -64,8 +64,9 @@
 
   <section>
     <h2>일별 추이</h2>
-    <svg class="chart" id="daily" viewBox="0 0 720 160" preserveAspectRatio="none" aria-label="일별 조회·클릭 추이"></svg>
+    <svg class="chart" id="daily" viewBox="0 0 720 160" preserveAspectRatio="none" aria-hidden="true"></svg>
     <div class="legend"><span><i style="background:#9a9188"></i>조회</span><span><i style="background:#03c75a"></i>클릭</span></div>
+    <details><summary class="note">표로 보기</summary><div class="wrap"><table id="dailyTable"></table></div></details>
   </section>
 </main>
 
@@ -126,14 +127,16 @@
     }
     // 교차표
     const chs = Object.keys(s.cross).sort((a, b) => sum(s.cross[b]) - sum(s.cross[a]));
-    const totals = Object.fromEntries(STORES.map(st => [st, 0]));
+    const hasUnknown = chs.some(ch => s.cross[ch].unknown);
+    const cols = hasUnknown ? [...STORES, 'unknown'] : STORES;
+    const totals = Object.fromEntries(cols.map(st => [st, 0]));
     const crossRows = chs.map(ch => {
       const r = s.cross[ch]; let t = 0;
-      const cells = [chName(ch), ...STORES.map(st => { const n = r[st] || 0; totals[st] += n; t += n; return num(n); }), num(t)];
+      const cells = [chName(ch), ...cols.map(st => { const n = r[st] || 0; totals[st] += n; t += n; return num(n); }), num(t)];
       return row(cells);
     });
-    crossRows.push(row(['합계', ...STORES.map(st => num(totals[st])), num(sum(totals))], 'td', 'total'));
-    fill($('cross'), ['채널', ...STORES.map(st => STORE_NAMES[st]), '합계'], crossRows, '클릭 없음');
+    crossRows.push(row(['합계', ...cols.map(st => num(totals[st])), num(sum(totals))], 'td', 'total'));
+    fill($('cross'), ['채널', ...cols.map(st => STORE_NAMES[st]), '합계'], crossRows, '클릭 없음');
     // 채널별
     fill($('channels'), ['채널', '조회', '클릭', '클릭률'],
       s.channels.map(c => row([chName(c.ch), num(c.views), num(c.clicks), c.views ? Math.round(c.ctr * 100) + '%' : '·'])), '데이터 없음');
@@ -141,16 +144,25 @@
     fill($('contents'), ['콘텐츠 코드', '채널', '클릭'],
       s.contents.map(c => row([c.c, chName(c.ch), num(c.clicks)])), '콘텐츠 코드가 붙은 클릭이 아직 없음');
     drawDaily(s.daily);
+    fill($('dailyTable'), ['날짜', '조회', '클릭'], s.daily.map(d => row([d.date, num(d.views), num(d.clicks)])), '데이터 없음');
   }
   function sum(obj) { return Object.values(obj).reduce((a, b) => a + b, 0); }
 
   function drawDaily(daily) {
     const svg = $('daily'); svg.replaceChildren();
-    if (daily.length < 2) return;
+    if (!daily.length) return;
     const W = 720, H = 160, pad = 10;
     const max = Math.max(1, ...daily.map(d => Math.max(d.views, d.clicks)));
-    const x = (i) => pad + (i / (daily.length - 1)) * (W - 2 * pad);
+    const x = (i) => daily.length === 1 ? W / 2 : pad + (i / (daily.length - 1)) * (W - 2 * pad);
     const y = (v) => H - pad - (v / max) * (H - 2 * pad);
+    if (daily.length === 1) {
+      for (const [key, color] of [['views', '#9a9188'], ['clicks', '#03c75a']]) {
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', x(0)); c.setAttribute('cy', y(daily[0][key])); c.setAttribute('r', '5'); c.setAttribute('fill', color);
+        svg.appendChild(c);
+      }
+      return;
+    }
     const line = (key, color) => {
       const p = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
       p.setAttribute('points', daily.map((d, i) => x(i) + ',' + y(d[key])).join(' '));
