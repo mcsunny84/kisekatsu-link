@@ -26,10 +26,10 @@
 
 | 채널 | 계정 | 교체일 | 확인자 | 비고 |
 |---|---|---|---|---|
-| Instagram | kise.katsu | | | |
-| Threads | | | | |
-| YouTube | | | | |
-| TikTok | | | | |
+| Instagram | kise.katsu | | 태양 | 웹은 링크 수정 불가 → 태양이 앱에서 교체 |
+| Threads | @kise.katsu | | | 2026-10-16 크롬 접속 시 계정 잠금(복구 코드) 화면 → 태양 해제 후 교체 |
+| YouTube | @kisekatsu | 2026-10-16 | Claude | 스튜디오 링크 URL 교체, 공개 채널 정보에서 확인 |
+| TikTok | @kisekatsu | 2026-10-16 | Claude | 웹은 웹사이트 칸 없음 → 소개글 내 주소를 link.kisekatsu.kr/?ch=tt로 교체, 공개 프로필 확인 |
 | Naver Clip | | | | |
-| X | | | | |
-| 링크트리(과도기 버튼) | linktr.ee/KISEKATSU | | | |
+| X | @kisekatsu | 2026-10-16 | Claude | 웹사이트 칸 교체, 공개 프로필 확인 |
+| 링크트리(과도기 버튼) | linktr.ee/KISEKATSU | 2026-10-16 | Claude | 지점 3개 숨김, 「키세카츠 매장 안내」→?ch=lt 1개(제목은 자동 생성값 유지). 공개 페이지에서 버튼 1개 확인 |
