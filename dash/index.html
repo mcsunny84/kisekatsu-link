@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>키세카츠 링크 현황판</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <style>
+    :root { --bg:#f8f4ec; --card:#fff; --text:#1d1a17; --muted:#6b645c; --brand:#be1e2d; --line:#e6dfd3; --accent:#03c75a; --soft:#f1ebe0; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#171412; --card:#24201c; --text:#f3ede3; --muted:#a79f94; --line:#3a332c; --soft:#2d2823; }
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif; padding:20px 16px 40px; }
+    main { max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:20px; }
+    header h1 { margin:0; font-size:20px; }
+    header p { margin:4px 0 0; color:var(--muted); font-size:13px; }
+    .range { display:flex; gap:6px; margin-top:12px; }
+    .range button { flex:1; padding:10px 0; border:1px solid var(--line); background:var(--card); color:var(--text); border-radius:10px; font-size:14px; }
+    .range button[aria-pressed="true"] { background:var(--brand); color:#fff; border-color:var(--brand); }
+    section { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; }
+    h2 { margin:0 0 10px; font-size:15px; }
+    .note { margin:8px 0 0; color:var(--muted); font-size:12px; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { padding:8px 6px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; }
+    th:first-child, td:first-child { text-align:left; }
+    thead th { color:var(--muted); font-weight:600; font-size:12px; }
+    tr.total td { font-weight:700; background:var(--soft); }
+    .empty { color:var(--muted); text-align:center; padding:24px 0; }
+    .wrap { overflow-x:auto; }
+    svg.chart { width:100%; height:160px; display:block; }
+    .legend { display:flex; gap:14px; font-size:12px; color:var(--muted); margin-top:6px; }
+    .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:middle; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>키세카츠 링크 현황판</h1>
+    <p id="updated">불러오는 중…</p>
+    <div class="range" role="group" aria-label="기간">
+      <button data-days="7">7일</button>
+      <button data-days="30">30일</button>
+      <button data-days="">전체</button>
+    </div>
+  </header>
+
+  <section>
+    <h2>채널 × 지점 클릭</h2>
+    <div class="wrap"><table id="cross"></table></div>
+    <p class="note">인스타 릴스는 캡션에 링크를 못 넣어 콘텐츠별은 인스타 인사이트에서 보세요.</p>
+  </section>
+
+  <section>
+    <h2>채널별 조회·클릭</h2>
+    <div class="wrap"><table id="channels"></table></div>
+  </section>
+
+  <section>
+    <h2>콘텐츠 코드별 클릭 (상위 20)</h2>
+    <div class="wrap"><table id="contents"></table></div>
+  </section>
+
+  <section>
+    <h2>일별 추이</h2>
+    <svg class="chart" id="daily" viewBox="0 0 720 160" preserveAspectRatio="none" aria-label="일별 조회·클릭 추이"></svg>
+    <div class="legend"><span><i style="background:#9a9188"></i>조회</span><span><i style="background:#03c75a"></i>클릭</span></div>
+  </section>
+</main>
+
+<script type="module">
+  import { summarize, CHANNEL_NAMES, STORES, STORE_NAMES } from '../lib/aggregate.js';
+
+  const $ = (id) => document.getElementById(id);
+  const KEY = 'kise-dash-days';
+  let days = 30;
+  try { const v = localStorage.getItem(KEY); if (v !== null) days = v === '' ? null : Number(v); } catch {}
+
+  function todayKST() {
+    return new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+  }
+  function fmtUpdated(iso) {
+    if (!iso) return '아직 갱신된 적 없음';
+    const d = new Date(new Date(iso).getTime() + 9 * 3600 * 1000);
+    return '갱신 ' + d.toISOString().slice(0, 16).replace('T', ' ') + ' (KST)';
+  }
+  function cell(tag, text, cls) {
+    const el = document.createElement(tag);
+    el.textContent = text;
+    if (cls) el.className = cls;
+    return el;
+  }
+  function row(cells, tag = 'td', cls) {
+    const tr = document.createElement('tr');
+    if (cls) tr.className = cls;
+    for (const c of cells) tr.appendChild(cell(tag, c));
+    return tr;
+  }
+  function fill(table, head, rows, emptyText) {
+    table.replaceChildren();
+    if (!rows.length) {
+      const tr = document.createElement('tr');
+      const td = cell('td', emptyText, 'empty'); td.colSpan = head.length; tr.appendChild(td);
+      table.appendChild(tr); return;
+    }
+    const thead = document.createElement('thead'); thead.appendChild(row(head, 'th')); table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    for (const r of rows) tbody.appendChild(r);
+    table.appendChild(tbody);
+  }
+  const chName = (ch) => CHANNEL_NAMES[ch] || ch;
+  const num = (n) => n ? String(n) : '·';
+
+  function render(data) {
+    const s = summarize(data, days, todayKST());
+    $('updated').textContent = fmtUpdated(s.updated);
+    for (const b of document.querySelectorAll('.range button')) {
+      const v = b.dataset.days === '' ? null : Number(b.dataset.days);
+      b.setAttribute('aria-pressed', String(v === days));
+    }
+    if (s.empty) {
+      const msg = '아직 데이터 없음. 바이오 교체 뒤 하루 지나면 보입니다.';
+      fill($('cross'), [''], [], msg); fill($('channels'), [''], [], msg); fill($('contents'), [''], [], msg);
+      $('daily').replaceChildren(); return;
+    }
+    // 교차표
+    const chs = Object.keys(s.cross).sort((a, b) => sum(s.cross[b]) - sum(s.cross[a]));
+    const totals = Object.fromEntries(STORES.map(st => [st, 0]));
+    const crossRows = chs.map(ch => {
+      const r = s.cross[ch]; let t = 0;
+      const cells = [chName(ch), ...STORES.map(st => { const n = r[st] || 0; totals[st] += n; t += n; return num(n); }), num(t)];
+      return row(cells);
+    });
+    crossRows.push(row(['합계', ...STORES.map(st => num(totals[st])), num(sum(totals))], 'td', 'total'));
+    fill($('cross'), ['채널', ...STORES.map(st => STORE_NAMES[st]), '합계'], crossRows, '클릭 없음');
+    // 채널별
+    fill($('channels'), ['채널', '조회', '클릭', '클릭률'],
+      s.channels.map(c => row([chName(c.ch), num(c.views), num(c.clicks), c.views ? Math.round(c.ctr * 100) + '%' : '·'])), '데이터 없음');
+    // 콘텐츠별
+    fill($('contents'), ['콘텐츠 코드', '채널', '클릭'],
+      s.contents.map(c => row([c.c, chName(c.ch), num(c.clicks)])), '콘텐츠 코드가 붙은 클릭이 아직 없음');
+    drawDaily(s.daily);
+  }
+  function sum(obj) { return Object.values(obj).reduce((a, b) => a + b, 0); }
+
+  function drawDaily(daily) {
+    const svg = $('daily'); svg.replaceChildren();
+    if (daily.length < 2) return;
+    const W = 720, H = 160, pad = 10;
+    const max = Math.max(1, ...daily.map(d => Math.max(d.views, d.clicks)));
+    const x = (i) => pad + (i / (daily.length - 1)) * (W - 2 * pad);
+    const y = (v) => H - pad - (v / max) * (H - 2 * pad);
+    const line = (key, color) => {
+      const p = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      p.setAttribute('points', daily.map((d, i) => x(i) + ',' + y(d[key])).join(' '));
+      p.setAttribute('fill', 'none'); p.setAttribute('stroke', color); p.setAttribute('stroke-width', '2');
+      p.setAttribute('vector-effect', 'non-scaling-stroke');
+      svg.appendChild(p);
+    };
+    line('views', '#9a9188'); line('clicks', '#03c75a');
+  }
+
+  for (const b of document.querySelectorAll('.range button')) {
+    b.addEventListener('click', () => {
+      days = b.dataset.days === '' ? null : Number(b.dataset.days);
+      try { localStorage.setItem(KEY, days === null ? '' : String(days)); } catch {}
+      if (window.__data) render(window.__data);
+    });
+  }
+
+  fetch('./data.json', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : { updated: null, views: [], clicks: [] })
+    .catch(() => ({ updated: null, views: [], clicks: [] }))
+    .then(d => { window.__data = d; render(d); });
+</script>
+</body>
+</html>

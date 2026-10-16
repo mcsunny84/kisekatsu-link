@@ -1,0 +1,23 @@
+{
+  "updated": "2026-10-16T15:10:00.000Z",
+  "views": [
+    { "date": "2026-10-05", "ch": "ig", "c": "", "n": 40 },
+    { "date": "2026-10-08", "ch": "ig", "c": "", "n": 30 },
+    { "date": "2026-10-10", "ch": "yt", "c": "251010-kimchinabe", "n": 12 },
+    { "date": "2026-10-12", "ch": "th", "c": "251012-miso", "n": 9 },
+    { "date": "2026-10-13", "ch": "(not set)", "c": "(not set)", "n": 5 },
+    { "date": "2026-10-14", "ch": "ig", "c": "", "n": 20 },
+    { "date": "2026-10-15", "ch": "tt", "c": "", "n": 4 },
+    { "date": "2026-10-16", "ch": "ig", "c": "", "n": 10 }
+  ],
+  "clicks": [
+    { "date": "2026-10-05", "ch": "ig", "c": "", "store": "anguk", "n": 15 },
+    { "date": "2026-10-08", "ch": "ig", "c": "", "store": "anguk", "n": 9 },
+    { "date": "2026-10-08", "ch": "ig", "c": "", "store": "sinsa", "n": 6 },
+    { "date": "2026-10-10", "ch": "yt", "c": "251010-kimchinabe", "store": "sinsa", "n": 3 },
+    { "date": "2026-10-12", "ch": "th", "c": "251012-miso", "store": "sinnonhyeon", "n": 2 },
+    { "date": "2026-10-13", "ch": "(not set)", "c": "(not set)", "store": "anguk", "n": 1 },
+    { "date": "2026-10-14", "ch": "ig", "c": "", "store": "anguk", "n": 5 },
+    { "date": "2026-10-16", "ch": "ig", "c": "", "store": "sinnonhyeon", "n": 2 }
+  ]
+}
