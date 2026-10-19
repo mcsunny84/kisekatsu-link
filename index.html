@@ -27,58 +27,71 @@
   <style>
     :root {
       --bg: #f8f4ec; --card: #ffffff; --text: #1d1a17; --muted: #6b645c;
-      --brand: #be1e2d; --naver: #03c75a; --line: #e6dfd3; --shadow: 0 2px 10px rgba(0,0,0,.06);
+      --brand: #be1e2d; --brand-text: #be1e2d; --naver: #03c75a; --line: #e6dfd3; --shadow: 0 2px 10px rgba(0,0,0,.06);
     }
     @media (prefers-color-scheme: dark) {
-      :root { --bg: #171412; --card: #24201c; --text: #f3ede3; --muted: #a79f94; --line: #3a332c; --shadow: 0 2px 10px rgba(0,0,0,.4); }
+      :root { --bg: #171412; --card: #24201c; --text: #f3ede3; --muted: #a79f94; --brand-text: #f06a76; --line: #3a332c; --shadow: 0 2px 10px rgba(0,0,0,.4); }
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; background: var(--bg); color: var(--text); }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
       min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
-      padding: 48px 16px 32px;
+      padding: 44px 22px 28px;
     }
     main { width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .logo { width: 72px; height: 72px; border-radius: 50%; box-shadow: var(--shadow); }
-    h1 { margin: 8px 0 0; font-size: 26px; letter-spacing: .04em; }
-    .lead { margin: 0 0 16px; color: var(--muted); font-size: 14px; text-align: center; }
+    .logo { width: 84px; height: 84px; border-radius: 50%; box-shadow: var(--shadow); }
+    h1 { margin: 8px 0 0; font-size: 30px; letter-spacing: .06em; }
+    .kanji { margin: 0; font-size: 13px; color: var(--muted); letter-spacing: .3em; }
+    .story { text-align: center; margin: 18px 0 10px; }
+    .story h2 { margin: 0 0 10px; font-size: 19px; line-height: 1.4; font-weight: 700; word-break: keep-all; }
+    .story p { margin: 0; font-size: 14px; line-height: 1.7; color: var(--muted); word-break: keep-all; }
+    .story b { color: var(--brand-text); font-weight: 600; }
+    .rule { width: 36px; border: 0; border-top: 2px solid var(--brand); margin: 4px 0 10px; }
+    @media (max-width: 360px) { .story h2 { font-size: 17px; } .story p { font-size: 13px; } .store { font-size: 17px; } }
     .store {
-      display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px;
-      padding: 0 18px; border: 1px solid var(--line); border-radius: 14px;
+      display: flex; align-items: center; gap: 14px; width: 100%; min-height: 68px;
+      padding: 10px 18px 10px 20px; border: 1px solid var(--line); border-radius: 16px;
       background: var(--card); color: var(--text); text-decoration: none;
-      font-size: 17px; font-weight: 600; box-shadow: var(--shadow);
+      font-size: 18px; font-weight: 700; box-shadow: var(--shadow);
       transition: transform .08s ease;
     }
     .store:active { transform: scale(.985); }
     .store:focus-visible { outline: 3px solid var(--naver); outline-offset: 2px; }
-    .store svg { flex: none; width: 28px; height: 28px; }
-    .store span { flex: 1; }
+    .store svg { flex: none; width: 30px; height: 30px; }
+    .store span { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; word-break: keep-all; }
     .store small { color: var(--muted); font-weight: 400; font-size: 12px; }
-    footer { margin-top: auto; padding-top: 32px; font-size: 12px; }
+    .store .arrow { flex: none; color: var(--muted); font-size: 18px; }
+    footer { margin-top: auto; padding-top: 28px; font-size: 12px; }
     footer a { color: var(--muted); text-decoration: none; }
   </style>
 </head>
 <body>
   <main>
-    <img class="logo" src="assets/logo.png" alt="키세카츠 로고" width="72" height="72">
+    <img class="logo" src="assets/logo.png" alt="키세카츠 로고" width="84" height="84">
     <h1>키세카츠</h1>
-    <p class="lead">가까운 매장을 골라 위치·메뉴를 확인하세요</p>
+    <p class="kanji">氣勢 · 勝</p>
+
+    <section class="story">
+      <h2>이기고 싶은 날엔, 카츠를 먹는다</h2>
+      <p><b>기세(氣勢)</b>에 <b>카츠(勝つ, 이기다)</b>를 더한 이름. 일본에서 중요한 날 승리를 빌며 먹는 돈카츠의 마음을 서울로 가져왔습니다.</p>
+    </section>
+    <hr class="rule" aria-hidden="true">
 
     <a class="store" data-store="sinnonhyeon" href="https://naver.me/5UVwGmuo">
       <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="#03c75a"/><path d="M8.5 8h3.6l3.9 5.9V8H19.5v12h-3.6L12 14.1V20H8.5z" fill="#fff"/></svg>
-      <span>키세카츠 신논현점</span>
-      <small>네이버 플레이스</small>
+      <span>키세카츠 신논현점<small>네이버 플레이스</small></span>
+      <i class="arrow" aria-hidden="true">›</i>
     </a>
     <a class="store" data-store="anguk" href="https://naver.me/G1m1aYFf">
       <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="#03c75a"/><path d="M8.5 8h3.6l3.9 5.9V8H19.5v12h-3.6L12 14.1V20H8.5z" fill="#fff"/></svg>
-      <span>키세카츠 안국역점</span>
-      <small>네이버 플레이스</small>
+      <span>키세카츠 안국역점<small>네이버 플레이스</small></span>
+      <i class="arrow" aria-hidden="true">›</i>
     </a>
     <a class="store" data-store="sinsa" href="https://naver.me/FfeO1eh0">
       <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="#03c75a"/><path d="M8.5 8h3.6l3.9 5.9V8H19.5v12h-3.6L12 14.1V20H8.5z" fill="#fff"/></svg>
-      <span>키세카츠 신사역점</span>
-      <small>네이버 플레이스</small>
+      <span>키세카츠 신사역점<small>네이버 플레이스</small></span>
+      <i class="arrow" aria-hidden="true">›</i>
     </a>
   </main>
   <footer><a href="https://kisekatsu.kr/">kisekatsu.kr</a></footer>
