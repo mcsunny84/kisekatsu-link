@@ -27,7 +27,7 @@
 | 채널 | 계정 | 교체일 | 확인자 | 비고 |
 |---|---|---|---|---|
 | Instagram | kise.katsu | 2026-10-19 | 태양 | 앱에서 교체, 공개 프로필에서 link.kisekatsu.kr/?ch=ig 확인(Claude, linktr.ee 없음) |
-| Threads | @kise.katsu | 2026-10-19 | 태양 | 앱에서 교체. 프로필엔 link.kisekatsu.kr/ 로만 표시(스레드가 쿼리 생략 표시). 태양 탭 확인: ?ch=th 유지, 스레드가 utm_source=threads·fbclid를 덧붙임(무해) |
+| Threads | @kise.katsu | 미완(10-19) | 태양 | 앱에서 교체. 프로필엔 link.kisekatsu.kr/ 로만 표시(스레드가 쿼리 생략 표시). 태양 탭 확인: ?ch=th 유지(utm·fbclid 자동 추가는 무해). 그러나 저장 후 새로고침하면 링크가 사라짐(꼬리표 없는 주소도 동일) → 계정 복구 직후 제한으로 추정, 10-21 이후 재시도 |
 | YouTube | @kisekatsu | 2026-10-16 | Claude | 스튜디오 링크 URL 교체, 공개 채널 정보에서 확인 |
 | TikTok | @kisekatsu | 2026-10-16 | Claude | 웹은 웹사이트 칸 없음 → 소개글 내 주소를 link.kisekatsu.kr/?ch=tt로 교체, 공개 프로필 확인 |
 | Naver Clip | kisekatsu | 2026-10-19 | 태양 | 소개글에 https://link.kisekatsu.kr/?ch=nc 텍스트로 삽입(캡처 확인) |
