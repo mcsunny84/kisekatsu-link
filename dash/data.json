@@ -1,11 +1,23 @@
 {
- "updated": "2026-10-28T20:14:56.373Z",
+ "updated": "2026-10-29T20:16:05.250Z",
  "views": [
   {
    "date": "2026-10-28",
    "ch": "meta",
    "c": "251027-palace-free",
-   "n": 78
+   "n": 80
+  },
+  {
+   "date": "2026-10-29",
+   "ch": "meta",
+   "c": "251027-palace-free",
+   "n": 71
+  },
+  {
+   "date": "2026-10-29",
+   "ch": "meta",
+   "c": "251027-palace-free-en",
+   "n": 25
   },
   {
    "date": "2026-10-16",
@@ -174,12 +186,6 @@
    "ch": "th",
    "c": "251026-summer-ep3",
    "n": 1
-  },
-  {
-   "date": "2026-10-29",
-   "ch": "meta",
-   "c": "251027-palace-free",
-   "n": 1
   }
  ],
  "clicks": [
@@ -264,6 +270,27 @@
    "date": "2026-10-27",
    "ch": "meta",
    "c": "251027-palace-free",
+   "store": "sinsa",
+   "n": 1
+  },
+  {
+   "date": "2026-10-29",
+   "ch": "meta",
+   "c": "251027-palace-free-en",
+   "store": "anguk",
+   "n": 1
+  },
+  {
+   "date": "2026-10-29",
+   "ch": "meta",
+   "c": "251027-palace-free-en",
+   "store": "sinnonhyeon",
+   "n": 1
+  },
+  {
+   "date": "2026-10-29",
+   "ch": "meta",
+   "c": "251027-palace-free-en",
    "store": "sinsa",
    "n": 1
   }
