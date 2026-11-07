@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T20:51:32.114Z",
+ "updated": "2026-11-07T19:24:24.563Z",
  "views": [
   {
    "date": "2026-11-01",
@@ -68,6 +68,12 @@
    "n": 27
   },
   {
+   "date": "2026-11-07",
+   "ch": "meta",
+   "c": "251107-palace-parking",
+   "n": 19
+  },
+  {
    "date": "2026-10-16",
    "ch": "direct",
    "c": "",
@@ -78,6 +84,12 @@
    "ch": "ig",
    "c": "",
    "n": 11
+  },
+  {
+   "date": "2026-11-07",
+   "ch": "th",
+   "c": "251107-palace-parking",
+   "n": 10
   },
   {
    "date": "2026-10-27",
@@ -486,6 +498,27 @@
    "date": "2026-11-05",
    "ch": "ig",
    "c": "",
+   "store": "sinsa",
+   "n": 1
+  },
+  {
+   "date": "2026-11-07",
+   "ch": "meta",
+   "c": "251107-palace-parking",
+   "store": "anguk",
+   "n": 1
+  },
+  {
+   "date": "2026-11-07",
+   "ch": "meta",
+   "c": "251107-palace-parking",
+   "store": "sinnonhyeon",
+   "n": 1
+  },
+  {
+   "date": "2026-11-07",
+   "ch": "meta",
+   "c": "251107-palace-parking",
    "store": "sinsa",
    "n": 1
   }
