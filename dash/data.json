@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T02:10:13.238Z",
+ "updated": "2026-11-24T23:51:55.235Z",
  "views": [
   {
    "date": "2026-11-01",
@@ -53,6 +53,12 @@
    "date": "2026-10-29",
    "ch": "meta",
    "c": "251027-palace-free",
+   "n": 75
+  },
+  {
+   "date": "2026-11-24",
+   "ch": "meta",
+   "c": "261119-suneung-event",
    "n": 75
   },
   {
@@ -182,12 +188,6 @@
    "n": 8
   },
   {
-   "date": "2026-11-24",
-   "ch": "meta",
-   "c": "261119-suneung-event",
-   "n": 6
-  },
-  {
    "date": "2026-10-27",
    "ch": "th",
    "c": "251027-palace-free",
@@ -215,6 +215,18 @@
    "date": "2026-11-18",
    "ch": "ig",
    "c": "",
+   "n": 4
+  },
+  {
+   "date": "2026-11-24",
+   "ch": "ig",
+   "c": "",
+   "n": 4
+  },
+  {
+   "date": "2026-11-25",
+   "ch": "meta",
+   "c": "261119-suneung-event",
    "n": 4
   },
   {
@@ -560,6 +572,13 @@
    "n": 3
   },
   {
+   "date": "2026-11-24",
+   "ch": "meta",
+   "c": "261119-suneung-event",
+   "store": "sinnonhyeon",
+   "n": 3
+  },
+  {
    "date": "2026-10-26",
    "ch": "ig",
    "c": "",
@@ -613,6 +632,13 @@
    "ch": "meta",
    "c": "261119-suneung-event",
    "store": "sinnonhyeon",
+   "n": 2
+  },
+  {
+   "date": "2026-11-24",
+   "ch": "meta",
+   "c": "261119-suneung-event",
+   "store": "anguk",
    "n": 2
   },
   {
@@ -900,6 +926,27 @@
    "ch": "meta",
    "c": "261119-suneung-event",
    "store": "sinsa",
+   "n": 1
+  },
+  {
+   "date": "2026-11-24",
+   "ch": "ig",
+   "c": "",
+   "store": "sinnonhyeon",
+   "n": 1
+  },
+  {
+   "date": "2026-11-24",
+   "ch": "meta",
+   "c": "261119-suneung-event",
+   "store": "sinsa",
+   "n": 1
+  },
+  {
+   "date": "2026-11-25",
+   "ch": "meta",
+   "c": "261119-suneung-event",
+   "store": "anguk",
    "n": 1
   }
  ]
