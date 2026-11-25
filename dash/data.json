@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T23:51:55.235Z",
+ "updated": "2026-11-25T23:36:15.881Z",
  "views": [
   {
    "date": "2026-11-01",
@@ -84,6 +84,12 @@
    "ch": "meta",
    "c": "251107-palace-parking",
    "n": 68
+  },
+  {
+   "date": "2026-11-25",
+   "ch": "meta",
+   "c": "261119-suneung-event",
+   "n": 67
   },
   {
    "date": "2026-11-09",
@@ -225,8 +231,8 @@
   },
   {
    "date": "2026-11-25",
-   "ch": "meta",
-   "c": "261119-suneung-event",
+   "ch": "ig",
+   "c": "",
    "n": 4
   },
   {
@@ -323,6 +329,12 @@
    "date": "2026-11-19",
    "ch": "meta",
    "c": "251027-palace-free",
+   "n": 2
+  },
+  {
+   "date": "2026-11-26",
+   "ch": "meta",
+   "c": "261119-suneung-event",
    "n": 2
   },
   {
@@ -579,6 +591,20 @@
    "n": 3
   },
   {
+   "date": "2026-11-25",
+   "ch": "meta",
+   "c": "261119-suneung-event",
+   "store": "anguk",
+   "n": 3
+  },
+  {
+   "date": "2026-11-25",
+   "ch": "meta",
+   "c": "261119-suneung-event",
+   "store": "sinnonhyeon",
+   "n": 3
+  },
+  {
    "date": "2026-10-26",
    "ch": "ig",
    "c": "",
@@ -639,6 +665,13 @@
    "ch": "meta",
    "c": "261119-suneung-event",
    "store": "anguk",
+   "n": 2
+  },
+  {
+   "date": "2026-11-25",
+   "ch": "ig",
+   "c": "",
+   "store": "sinsa",
    "n": 2
   },
   {
@@ -944,9 +977,16 @@
   },
   {
    "date": "2026-11-25",
+   "ch": "ig",
+   "c": "",
+   "store": "sinnonhyeon",
+   "n": 1
+  },
+  {
+   "date": "2026-11-25",
    "ch": "meta",
    "c": "261119-suneung-event",
-   "store": "anguk",
+   "store": "sinsa",
    "n": 1
   }
  ]
